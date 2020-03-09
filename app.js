@@ -17,16 +17,17 @@ var mysql = require("mysql");
 app.use(bodyparser.json());
 app.use('/api', usersRouter);
 
-
-var mysqlConnection = mysql.createConnection({
-  host: "localhost",
-  user: "root",
-  password: "root",
-  database: "chat",
-   port: "8889",
-  multipleStatements: true
-
-});
+var mysqlConnection = mysql.createConnection('mysql://b3020c234f7bf9:c2f9aeec@eu-cdbr-west-02.cleardb.net/heroku_a055cf7e4179e62?reconnect=true');
+    connection.connect();
+// var mysqlConnection = mysql.createConnection({
+//   host: "localhost",
+//   user: "root",
+//   password: "root",
+//   database: "chat",
+//    port: "8889",
+//   multipleStatements: true
+//
+// });
 app.use(cors());
 
 const port = process.env.PORT || 3000;
