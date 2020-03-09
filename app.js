@@ -18,7 +18,7 @@ app.use(bodyparser.json());
 app.use('/api', usersRouter);
 
 var mysqlConnection = mysql.createConnection('mysql://b3020c234f7bf9:c2f9aeec@eu-cdbr-west-02.cleardb.net/heroku_a055cf7e4179e62?reconnect=true');
-    connection.connect();
+    mysqlConnection.connect();
 // var mysqlConnection = mysql.createConnection({
 //   host: "localhost",
 //   user: "root",
