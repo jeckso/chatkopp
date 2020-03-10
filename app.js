@@ -7,7 +7,7 @@ const pool = require('generic-pool');;
 var logger = require('morgan');
 const bodyparser = require('body-parser');
 
-var indexRouter = require('./routes/index');
+
 var usersRouter = require('./routes/users');
 
 var app = express();
@@ -20,18 +20,53 @@ app.use(bodyparser.json())
 app.use('/api', usersRouter);
 
 
-const mysqlConnection = pool.createPool({
-    create: (done) => {
-        return mysql.createConnection('mysql://b3020c234f7bf9:c2f9aeec@eu-cdbr-west-02.cleardb.net/heroku_a055cf7e4179e62?reconnect=true').connect(done);
-    },
-    destroy: connection => connection.destroy(),
-    validate: connection => connection.threadId,
-}, {
-    testOnBorrow: true,
-    acquireTimeoutMillis: 10000,
-    min: 1,
-    max: 2,
-});
+//mysql.createConnection('mysql://b3020c234f7bf9:c2f9aeec@eu-cdbr-west-02.cleardb.net/heroku_a055cf7e4179e62?reconnect=true').connect(done);
+var mysqlConnection;
+Reconnect = function *(db){
+
+     mysqlConnection = db.connection = mysql.createConnection('mysql://b3020c234f7bf9:c2f9aeec@eu-cdbr-west-02.cleardb.net/heroku_a055cf7e4179e62?reconnect=true');
+
+    try {
+
+        console.log('test db>')
+
+        yield cb => {mysqlConnection.connect(cb)};
+
+        console.log('test db>', 'Ok')
+
+    } catch (err) {
+
+        console.log('open db error>', err);
+
+        yield Reconnect(db);
+
+        throw err
+
+    };
+
+    try {
+
+        yield cb =>  db.connection.on('error',cb)
+
+    } catch (err) {
+
+        console.log('db error>', err);
+
+        if((err.code === 'PROTOCOL_CONNECTION_LOST') || (err.code == 'ECONNRESET')) {
+
+            console.log('try reconnect>')
+
+            yield Reconnect(db);
+
+        } else {
+
+            throw err;
+
+        }
+
+    }
+
+};
 // var mysqlConnection = mysql.createConnection({
 //   host: "localhost",
 //   user: "root",
