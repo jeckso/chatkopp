@@ -20,53 +20,9 @@ app.use(bodyparser.json())
 app.use('/api', usersRouter);
 
 
-//mysql.createConnection('mysql://b3020c234f7bf9:c2f9aeec@eu-cdbr-west-02.cleardb.net/heroku_a055cf7e4179e62?reconnect=true').connect(done);
-var mysqlConnection;
-Reconnect = function *(db){
+var mysqlConnection = mysql.createConnection('mysql://b3020c234f7bf9:c2f9aeec@eu-cdbr-west-02.cleardb.net/heroku_a055cf7e4179e62?reconnect=true').connect(done);
 
-     mysqlConnection = db.connection = mysql.createConnection('mysql://b3020c234f7bf9:c2f9aeec@eu-cdbr-west-02.cleardb.net/heroku_a055cf7e4179e62?reconnect=true');
 
-    try {
-
-        console.log('test db>')
-
-        yield cb => {mysqlConnection.connect(cb)};
-
-        console.log('test db>', 'Ok')
-
-    } catch (err) {
-
-        console.log('open db error>', err);
-
-        yield Reconnect(db);
-
-        throw err
-
-    };
-
-    try {
-
-        yield cb =>  db.connection.on('error',cb)
-
-    } catch (err) {
-
-        console.log('db error>', err);
-
-        if((err.code === 'PROTOCOL_CONNECTION_LOST') || (err.code == 'ECONNRESET')) {
-
-            console.log('try reconnect>')
-
-            yield Reconnect(db);
-
-        } else {
-
-            throw err;
-
-        }
-
-    }
-
-};
 // var mysqlConnection = mysql.createConnection({
 //   host: "localhost",
 //   user: "root",
