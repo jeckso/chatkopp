@@ -23,7 +23,7 @@ router.get('/chat', function (req, res) {
     });
 });
 
-router.post('/pidor', function (req, res) {
+router.post('/', function (req, res) {
 
 
     mysql.mysqlcon.query(
