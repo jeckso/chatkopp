@@ -71,8 +71,16 @@
 
 
     }
-    setInterval(function(){ajax()},1000);
+    // setInterval(function(){ajax()},1000);
+    function f() {
+        var $name = $("#name"); // Поле с именем
+        var $textarea = $("#message"); // Текстовое поле
+        var $all_messages = $("#all_mess"); // Блок с сообщениями
+        var req=new XMLHttpRequest();
+        req.open('POST',)
 
+
+    }
 </script>
 <!-- Подключаем jQuery, а также Socket.io -->
 <!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>-->
