@@ -69,42 +69,74 @@
         var $all_messages = $("#all_mess"); // Блок с сообщениями
         req.onreadystatechange=function(){
             if(req.readyState==4 && req.status==200){
-                var posts = JSON.parse(req.responseText);
-                console.log(posts);
-                posts.forEach(function (post) {
-                    var random = Math.floor(Math.random() * (max - min)) + min;
-                    var alertClass;
-                    switch (random) {
-                        case 1:
-                            alertClass = 'secondary';
-                            break;
-                        case 2:
-                            alertClass = 'danger';
-                            break;
-                        case 3:
-                            alertClass = 'success';
-                            break;
-                        case 4:
-                            alertClass = 'warning';
-                            break;
-                        case 5:
-                            alertClass = 'info';
-                            break;
-                        case 6:
-                            alertClass = 'light';
-                            break;
-                    }
-                    $all_messages.append("<div class='alert alert-" + alertClass + "'><b>" + post.sender_name + "</b>: " + post.text_data + "</div>");
+                if(arguments.length == 0){
+                    var posts = JSON.parse(req.responseText);
+                    console.log(posts);
+                    posts.forEach(function (post) {
+                        var random = Math.floor(Math.random() * (max - min)) + min;
+                        var alertClass;
+                        switch (random) {
+                            case 1:
+                                alertClass = 'secondary';
+                                break;
+                            case 2:
+                                alertClass = 'danger';
+                                break;
+                            case 3:
+                                alertClass = 'success';
+                                break;
+                            case 4:
+                                alertClass = 'warning';
+                                break;
+                            case 5:
+                                alertClass = 'info';
+                                break;
+                            case 6:
+                                alertClass = 'light';
+                                break;
+                        }
+                        $all_messages.append("<div class='alert alert-" + alertClass + "'><b>" + post.sender_name + "</b>: " + post.text_data + "</div>");
 
-                });
-               // document.getElementById('all_mess').innerHTML=req.responseText;
+                    });
+                    // document.getElementById('all_mess').innerHTML=req.responseText;
+
+                }
+                else if (arguments.length == 1){
+                    var posts = JSON.parse(req.responseText);
+                    console.log(posts);
+                        post = posts[0];
+                        var random = Math.floor(Math.random() * (max - min)) + min;
+                        var alertClass;
+                        switch (random) {
+                            case 1:
+                                alertClass = 'secondary';
+                                break;
+                            case 2:
+                                alertClass = 'danger';
+                                break;
+                            case 3:
+                                alertClass = 'success';
+                                break;
+                            case 4:
+                                alertClass = 'warning';
+                                break;
+                            case 5:
+                                alertClass = 'info';
+                                break;
+                            case 6:
+                                alertClass = 'light';
+                                break;
+                        }
+                        $all_messages.append("<div class='alert alert-" + alertClass + "'><b>" + post.sender_name + "</b>: " + post.text_data + "</div>");
+
+                    ;
+                }
 
             }
+            req.open('GET','https://chatkopp.herokuapp.com/api',true);
+            req.send();
+                }
 
-        }
-       req.open('GET','https://chatkopp.herokuapp.com/api',true);
-        var body = req.responseType
-        req.send();
 
 
     }
@@ -117,7 +149,7 @@
         var req=new XMLHttpRequest();
         var body = '$name=' + encodeURIComponent($name.val()) +
             '&$message=' + encodeURIComponent($textarea.val());
-        console.log(body);
+
         req.open("POST",'https://chatkopp.herokuapp.com/api/',true);
         req.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 
@@ -125,7 +157,7 @@
 
         req.send(body);
         ajax();
-        console.log("sos");
+
 
     }
 </script>
