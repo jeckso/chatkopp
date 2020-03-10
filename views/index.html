@@ -46,7 +46,7 @@
                 <label for="message">Сообщение</label>
                 <textarea name="message" id="message" class="form-control" placeholder="Введите сообщение"></textarea>
                 <br>
-                <input type="submit" value="Отправить" class="btn btn-danger">
+                <input type="submit" value="Отправить" class="btn btn-danger" onclick="f()" >
             </form>
         </div>
         <div class="col-6">
@@ -71,14 +71,19 @@
 
 
     }
+
     // setInterval(function(){ajax()},1000);
     function f() {
         var $name = $("#name"); // Поле с именем
         var $textarea = $("#message"); // Текстовое поле
         var $all_messages = $("#all_mess"); // Блок с сообщениями
         var req=new XMLHttpRequest();
-        req.open('POST',)
+        var body = '$name=' + encodeURIComponent($name.val()) +
+            '$message=' + encodeURIComponent($textarea.val());
+        req.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
 
+        req.open('POST','https://chatkopp.herokuapp.com/api;');
+        req.send(body);
 
     }
 </script>
