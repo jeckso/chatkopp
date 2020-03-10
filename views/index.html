@@ -79,10 +79,11 @@
         var $all_messages = $("#all_mess"); // Блок с сообщениями
         var req=new XMLHttpRequest();
         var body = '$name=' + encodeURIComponent($name.val()) +
-            '$message=' + encodeURIComponent($textarea.val());
+            '&$message=' + encodeURIComponent($textarea.val());
+        console.log(body);
         req.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
 
-        req.open('POST','https://chatkopp.herokuapp.com/api;');
+        req.open('POST','https://chatkopp.herokuapp.com/api;',true);
         req.send(body);
 
     }
