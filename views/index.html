@@ -69,74 +69,43 @@
         var $all_messages = $("#all_mess"); // Блок с сообщениями
         req.onreadystatechange=function(){
             if(req.readyState==4 && req.status==200){
-                if(arguments.length == 0){
-                    var posts = JSON.parse(req.responseText);
-                    console.log(posts);
-                    posts.forEach(function (post) {
-                        var random = Math.floor(Math.random() * (max - min)) + min;
-                        var alertClass;
-                        switch (random) {
-                            case 1:
-                                alertClass = 'secondary';
-                                break;
-                            case 2:
-                                alertClass = 'danger';
-                                break;
-                            case 3:
-                                alertClass = 'success';
-                                break;
-                            case 4:
-                                alertClass = 'warning';
-                                break;
-                            case 5:
-                                alertClass = 'info';
-                                break;
-                            case 6:
-                                alertClass = 'light';
-                                break;
-                        }
-                        $all_messages.append("<div class='alert alert-" + alertClass + "'><b>" + post.sender_name + "</b>: " + post.text_data + "</div>");
 
-                    });
-                    // document.getElementById('all_mess').innerHTML=req.responseText;
+                var posts = JSON.parse(req.responseText);
 
-                }
-                else if (arguments.length == 1){
-                    var posts = JSON.parse(req.responseText);
-                    console.log(posts);
-                        post = posts[0];
-                        var random = Math.floor(Math.random() * (max - min)) + min;
-                        var alertClass;
-                        switch (random) {
-                            case 1:
-                                alertClass = 'secondary';
-                                break;
-                            case 2:
-                                alertClass = 'danger';
-                                break;
-                            case 3:
-                                alertClass = 'success';
-                                break;
-                            case 4:
-                                alertClass = 'warning';
-                                break;
-                            case 5:
-                                alertClass = 'info';
-                                break;
-                            case 6:
-                                alertClass = 'light';
-                                break;
-                        }
-                        $all_messages.append("<div class='alert alert-" + alertClass + "'><b>" + post.sender_name + "</b>: " + post.text_data + "</div>");
+                console.log(posts);
+                posts.forEach(function (post) {
+                    var random = Math.floor(Math.random() * (max - min)) + min;
+                    var alertClass;
+                    switch (random) {
+                        case 1:
+                            alertClass = 'secondary';
+                            break;
+                        case 2:
+                            alertClass = 'danger';
+                            break;
+                        case 3:
+                            alertClass = 'success';
+                            break;
+                        case 4:
+                            alertClass = 'warning';
+                            break;
+                        case 5:
+                            alertClass = 'info';
+                            break;
+                        case 6:
+                            alertClass = 'light';
+                            break;
+                    }
+                    $all_messages.append("<div class='alert alert-" + alertClass + "'><b>" + post.sender_name + "</b>: " + post.text_data + "</div>");
 
-                    ;
-                }
+                });
+               // document.getElementById('all_mess').innerHTML=req.responseText;
 
             }
-            req.open('GET','https://chatkopp.herokuapp.com/api',true);
-            req.send();
-                }
 
+        }
+       req.open('GET','https://chatkopp.herokuapp.com/api',true);
+        req.send();
 
 
     }
@@ -156,7 +125,7 @@
 
 
         req.send(body);
-        ajax(1);
+        ajax();
 
 
     }
