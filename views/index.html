@@ -70,6 +70,7 @@
         req.onreadystatechange=function(){
             if(req.readyState==4 && req.status==200){
                 var posts = JSON.parse(req.responseText);
+                console.log(posts);
                 posts.forEach(function (post) {
                     var random = Math.floor(Math.random() * (max - min)) + min;
                     var alertClass;
