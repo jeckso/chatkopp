@@ -35,7 +35,7 @@ router.post('/', function (req, res) {
 });
 router.get('/', function (req, res) {
     mysql.mysqlcon.query(
-        'SELECT * FROM messages', function (error, results, fields) {
+        'SELECT * FROM messages ORDER BY id DESC', function (error, results, fields) {
         if (error) throw error;
       res.send(results);
         //res.send(JSON.stringify({"status": 200, "error": null, "response": results}));
