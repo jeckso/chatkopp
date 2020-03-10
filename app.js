@@ -20,7 +20,7 @@ app.use(bodyparser.json())
 app.use('/api', usersRouter);
 
 
-const connections = pool.createPool({
+const mysqlConnection = pool.createPool({
     create: (done) => {
         return mysql.createConnection('mysql://b3020c234f7bf9:c2f9aeec@eu-cdbr-west-02.cleardb.net/heroku_a055cf7e4179e62?reconnect=true').connect(done);
     },
@@ -30,7 +30,7 @@ const connections = pool.createPool({
     testOnBorrow: true,
     acquireTimeoutMillis: 10000,
     min: 1,
-    max: size,
+    max: 2,
 });
 // var mysqlConnection = mysql.createConnection({
 //   host: "localhost",
