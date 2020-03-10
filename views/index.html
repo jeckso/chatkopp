@@ -59,15 +59,49 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script type="text/javascript">
     function ajax(){
+        var min = 1;
+        var max = 6;
+
+
+
+
         var req=new XMLHttpRequest();
+        var $all_messages = $("#all_mess"); // Блок с сообщениями
         req.onreadystatechange=function(){
             if(req.readyState==4 && req.status==200){
+                var posts = JSON.parse(req.responseText);
+                posts.forEach(function (post) {
+                    var random = Math.floor(Math.random() * (max - min)) + min;
+                    var alertClass;
+                    switch (random) {
+                        case 1:
+                            alertClass = 'secondary';
+                            break;
+                        case 2:
+                            alertClass = 'danger';
+                            break;
+                        case 3:
+                            alertClass = 'success';
+                            break;
+                        case 4:
+                            alertClass = 'warning';
+                            break;
+                        case 5:
+                            alertClass = 'info';
+                            break;
+                        case 6:
+                            alertClass = 'light';
+                            break;
+                    }
+                    $all_messages.append("<div class='alert alert-" + "alertClass" + "'><b>" + post.sender_name + "</b>: " + post.text_data + "</div>");
+                });
                 document.getElementById('all_mess').innerHTML=req.responseText;
 
             }
 
         }
        req.open('GET','https://chatkopp.herokuapp.com/api',true);
+        var body = req.responseType
         req.send();
 
 
@@ -98,33 +132,7 @@
 <!--<script>-->
 <!--    // У каждого пользователя будет случайный стиль для блока с сообщенями,-->
 <!--    // поэтому в этом кусочке кода мы получаем случайные числа-->
-<!--    var min = 1;-->
-<!--    var max = 6;-->
-<!--    var random = Math.floor(Math.random() * (max - min)) + min;-->
 
-<!--    // Устаналиваем класс в переменную в зависимости от случайного числа-->
-<!--    // Эти классы взяты из Bootstrap стилей-->
-<!--    var alertClass;-->
-<!--    switch (random) {-->
-<!--        case 1:-->
-<!--            alertClass = 'secondary';-->
-<!--            break;-->
-<!--        case 2:-->
-<!--            alertClass = 'danger';-->
-<!--            break;-->
-<!--        case 3:-->
-<!--            alertClass = 'success';-->
-<!--            break;-->
-<!--        case 4:-->
-<!--            alertClass = 'warning';-->
-<!--            break;-->
-<!--        case 5:-->
-<!--            alertClass = 'info';-->
-<!--            break;-->
-<!--        case 6:-->
-<!--            alertClass = 'light';-->
-<!--            break;-->
-<!--    }-->
 
 <!--    function fet() {-->
 <!--        const proxyurl = "http://localhost:8010/proxy/api/";-->
