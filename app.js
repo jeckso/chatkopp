@@ -3,7 +3,7 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var cors = require('cors');
-
+const pool = require('generic-pool');;
 var logger = require('morgan');
 const bodyparser = require('body-parser');
 
@@ -19,8 +19,19 @@ app.use(bodyparser.json())
 
 app.use('/api', usersRouter);
 
-var mysqlConnection = mysql.createConnection('mysql://b3020c234f7bf9:c2f9aeec@eu-cdbr-west-02.cleardb.net/heroku_a055cf7e4179e62?reconnect=true');
-    mysqlConnection.connect();
+
+const connections = pool.createPool({
+    create: (done) => {
+        return mysql.createConnection('mysql://b3020c234f7bf9:c2f9aeec@eu-cdbr-west-02.cleardb.net/heroku_a055cf7e4179e62?reconnect=true').connect(done);
+    },
+    destroy: connection => connection.destroy(),
+    validate: connection => connection.threadId,
+}, {
+    testOnBorrow: true,
+    acquireTimeoutMillis: 10000,
+    min: 1,
+    max: size,
+});
 // var mysqlConnection = mysql.createConnection({
 //   host: "localhost",
 //   user: "root",
