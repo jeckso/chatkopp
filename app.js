@@ -13,26 +13,18 @@ var usersRouter = require('./routes/users');
 var app = express();
 var mysql = require("mysql");
 app.use(bodyparser.urlencoded({ extended: false }))
-// parse application/json
+
 app.use(bodyparser.json())
-//Database connection
+
 
 app.use('/api', usersRouter);
 
-var mysqlConnection = mysql.createConnection('mysql://b3020c234f7bf9:c2f9aeec@eu-cdbr-west-02.cleardb.net/heroku_a055cf7e4179e62?reconnect=true');
-    mysqlConnection.connect();
+//var mysqlConnection = mysql.createConnection('mysql://b3020c234f7bf9:c2f9aeec@eu-cdbr-west-02.cleardb.net/heroku_a055cf7e4179e62?reconnect=true');
+  //  mysqlConnection.connect();
 
-// var mysqlConnection = mysql.createConnection({
-//   host: "localhost",
-//   user: "root",
-//   password: "root",
-//   database: "chat",
-//    port: "8889",
-//   multipleStatements: true
-//
-// });
+
 app.use(cors());
 
 const port = process.env.PORT || 3000;
 app.listen(port,()=> console.log(`listen on port ${port}..`));
-module.exports.mysqlcon = mysqlConnection;
+

@@ -73,7 +73,8 @@
                 var posts = JSON.parse(req.responseText);
 
                 console.log(posts);
-                posts.forEach(function (post) {
+                posts.forEach(function (post)
+                {
                     var random = Math.floor(Math.random() * (max - min)) + min;
                     var alertClass;
                     switch (random) {
