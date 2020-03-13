@@ -16,19 +16,21 @@ var bcrypt = require('bcryptjs');
 var config = require('../config'); // get config file
 
 router.post('/login', function (req, res) {
-    mysql.query('SELECT `chat_name`, `chat_pass` FROM `credentials`', function (error, results, fields) {
-        if (error) res.send(results);
-        res.send(results);
-        var chats = JSON.stringify(results);
-        for (var i = 0; i < chats.length; i++) {
-            var currentChat = chats[i];
-            console.log(currentChat);
+    var hashedPassword = bcrypt.hashSync(req.body.chat_pass, 8);
 
+    mysql.query('SELECT `chat_name`, `chat_pass` FROM `credentials` WHERE `chat_name` = "' + req.body.chat_name + '"', function (error, results, fields) {
+        if (error) return res.status(500).send("There was a problem logging in`.");
+        if (results == 0) {
+            return res.status(404).send("No chat with name ", req.body.chat_name, " found :(");
+        } else {
+
+            var passwordIsValid = bcrypt.compareSync(req.body.chat_pass, results[0].chat_pass);
+            if (!passwordIsValid) return res.status(401).send({auth: false, token: null});
+
+            res.redirect(307, '/auth/register');
         }
-        console.log();
-        console.log(typeof fields);
 
-        //res.send(JSON.stringify({"status": 200, "error": null, "response": results}));
+
     });
 
     // User.findOne({ email: req.body.email }, function (err, user) {
@@ -57,13 +59,14 @@ router.get('/logout', function (req, res) {
 
 router.post('/register', function (req, res) {
 
-    var hashedPassword = bcrypt.hashSync(req.body.password, 8);
-    mysql.query('INSERT INTO `credentials` (`chat_name`, `chat_pass`) VALUES ("' + req.body.name + '", "' + hashedPassword + '")', function (err, user) {
+    var hashedPassword = bcrypt.hashSync(req.body.chat_pass, 8);
+    mysql.query('Insert into temp_users(id) values (NULL)', function (err, user) {
+        console.log(err);
         if (err) return res.status(500).send("There was a problem registering the user`.");
 
         // if user is registered without errors
         // create a token
-        var token = jwt.sign({id: user._id}, config.secret, {
+        var token = jwt.sign({id: user.id}, config.secret, {
             expiresIn: 86400 // expires in 24 hours
         });
 
@@ -72,14 +75,24 @@ router.post('/register', function (req, res) {
 
 
 });
+router.post('/create', function(req,res){
+    var hashedPassword = bcrypt.hashSync(req.body.chat_pass, 8);
+    mysql.query('INSERT INTO `credentials` (`chat_name`, `chat_pass`) VALUES ("' + req.body.chat_name + '", "' + hashedPassword + '")', function (err, user) {
+        if (err) return res.status(500).send("There was a problem creating chat`.");
+        res.redirect(307, '/auth/register');
+        //res.status(200).send("Chat created successfully!");
+
+    });
+    });
 
 router.get('/me', VerifyToken, function (req, res, next) {
 
-    User.findById(req.userId, {password: 0}, function (err, user) {
-        if (err) return res.status(500).send("There was a problem finding the user.");
-        if (!user) return res.status(404).send("No user found.");
-        res.status(200).send(user);
-    });
+
+      //  if (err) return res.status(500).send("There was a problem finding the user.");
+        // if (!user) return res.status(404).send("No user found.");
+    res.status(200).send("MMM Let's have sex");
+        // res.status(200).send(user);
+
 
 });
 
