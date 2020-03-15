@@ -26,8 +26,10 @@ router.post('/login', function (req, res) {
 
             var passwordIsValid = bcrypt.compareSync(req.body.chat_pass, results[0].chat_pass);
             if (!passwordIsValid) return res.status(401).send({auth: false, token: null});
-
-            res.redirect(307, '/auth/register');
+            var token = jwt.sign({id: req.body.chat_name}, config.secret, {
+                expiresIn: 86400 // expires in 24 hours
+            });
+            res.status(200).send({auth: true, token: token});
         }
 
 
@@ -56,30 +58,37 @@ router.post('/login', function (req, res) {
 router.get('/logout', function (req, res) {
     res.status(200).send({auth: false, token: null});
 });
-
-router.post('/register', function (req, res) {
-
-    var hashedPassword = bcrypt.hashSync(req.body.chat_pass, 8);
-    mysql.query('Insert into temp_users(id) values (NULL)', function (err, user) {
-        console.log(err);
-        if (err) return res.status(500).send("There was a problem registering the user`.");
-
-        // if user is registered without errors
-        // create a token
-        var token = jwt.sign({id: user.id}, config.secret, {
-            expiresIn: 86400 // expires in 24 hours
+router.get('/:name', VerifyToken, function (req,res) {
+    mysql.query(
+        'SELECT * FROM "' + name + '" ORDER BY id DESC', function (error, results, fields) {
+            if (error) throw error;
+            res.send(results);
+            //res.send(JSON.stringify({"status": 200, "error": null, "response": results}));
         });
 
-        res.status(200).send({auth: true, token: token});
-    });
-
-
 });
+// router.post('/register', function (req, res) {
+//
+//     var hashedPassword = bcrypt.hashSync(req.body.chat_pass, 8);
+//     mysql.query('Insert into temp_users(id) values (NULL)', function (err, user) {
+//         console.log(err);
+//         if (err) return res.status(500).send("There was a problem registering the user`.");
+//
+//         // if user is registered without errors
+//         // create a token
+//         var token = jwt.sign({id: req.body.chat_name}, config.secret, {
+//             expiresIn: 86400 // expires in 24 hours
+//         });
+//        // res.redirect(307, '/auth/'+req.body.chat_name+'_chat').send({auth: true, token: token})
+//              res.status(200).send({auth: true, token: token});
+//     });
+// });
+
 router.post('/create', function(req,res){
     var hashedPassword = bcrypt.hashSync(req.body.chat_pass, 8);
     mysql.query('INSERT INTO `credentials` (`chat_name`, `chat_pass`) VALUES ("' + req.body.chat_name + '", "' + hashedPassword + '")', function (err, user) {
         if (err) return res.status(500).send("There was a problem creating chat`.");
-        res.redirect(307, '/auth/register');
+        res.redirect(307, '/auth/login');
         //res.status(200).send("Chat created successfully!");
 
     });
