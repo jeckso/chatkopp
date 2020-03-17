@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <!-- Подключение Bootstrap чтобы все выглядело красиво -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css">
-    <title>Чат программа</title>
+    <title>Private rooms</title>
     <!-- Свои стили -->
     <style>
         body {
@@ -15,6 +15,7 @@
     </style>
 </head>
 <body onload="ajax()">
+<!--Создание меню на сайте (без функций)-->
 <div class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 bg-white border-bottom shadow-sm">
     <h5 class="my-0 mr-md-auto">Chat</h5>
     <nav class="my-2 my-md-0 mr-md-3">
@@ -26,31 +27,26 @@
 <!-- Основная часть страницы -->
 <div class="container">
     <div class="py-5 text-center">
-        <h2>Online chat</h2>
-        <p class="lead">Enter your name and let's chat</p>
+        <h2>Create your private chat</h2>
+        <p class="lead">Enter your chat name and password</p>
     </div>
     <div class="row">
-        <div class="col-6">
+        <div class="col-12 text-center">
             <!-- Форма для получения сообщений и имени -->
-            <h3>Message form</h3>
-            <form id="messForm" onsort="fet()">
-                <label for="name">Name</label>
-                <input type="text" name="name" id="name" placeholder="Enter your name" class="form-control">
+            <h3 align="center">Register form</h3>
+            <form id="credentials" onsort="fet()">
+                <label  for="chat_name">Chat name</label>
+                <input type="text" name="name" id="chat_name" placeholder="Enter chat name" class="form-control" style="text-align:center;">
                 <br>
-<!--                <label for="to_name">Получатель</label>-->
-<!--                <input type="text" name="to_name" id="to_name" placeholder="Введите имя получателя или all"-->
-<!--                       class="form-control" value="all">-->
-                <label for="message">Message</label>
-                <textarea name="message" id="message" class="form-control" placeholder="Enter your message"></textarea>
+                <label for="chat_pass">Chat pass</label>
+                <input type="text" name="to_name" id="chat_pass" placeholder="Введите имя получателя или all"
+                       class="form-control" value="Enter chat password" style="text-align:center;">
+
                 <br>
-                <input type="button" value="Send" class="btn btn-danger" onclick="f()" >
+                <input type="button" value="Login" class="btn btn-danger" onclick="f()"  >
             </form>
         </div>
-        <div class="col-6">
-            <h3>Messages</h3>
-            <!-- Вывод всех сообщений будет здесь -->
-            <div id="all_mess"></div>
-        </div>
+
     </div>
 </div>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
@@ -97,12 +93,12 @@
                     $all_messages.append("<div class='alert alert-" + alertClass + "'><b>" + post.sender_name + "</b>: " + post.text_data + "</div>");
 
                 });
-               // document.getElementById('all_mess').innerHTML=req.responseText;
+                // document.getElementById('all_mess').innerHTML=req.responseText;
 
             }
 
         }
-       req.open('GET','https://chatkopp.herokuapp.com/api',true);
+        req.open('GET','https://chatkopp.herokuapp.com/api',true);
         req.send();
 
         setInterval(function(){ajax()},10000);

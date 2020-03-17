@@ -67,22 +67,7 @@ router.get('/:name', VerifyToken, function (req,res) {
         });
 
 });
-// router.post('/register', function (req, res) {
-//
-//     var hashedPassword = bcrypt.hashSync(req.body.chat_pass, 8);
-//     mysql.query('Insert into temp_users(id) values (NULL)', function (err, user) {
-//         console.log(err);
-//         if (err) return res.status(500).send("There was a problem registering the user`.");
-//
-//         // if user is registered without errors
-//         // create a token
-//         var token = jwt.sign({id: req.body.chat_name}, config.secret, {
-//             expiresIn: 86400 // expires in 24 hours
-//         });
-//        // res.redirect(307, '/auth/'+req.body.chat_name+'_chat').send({auth: true, token: token})
-//              res.status(200).send({auth: true, token: token});
-//     });
-// });
+
 
 router.post('/create', function(req,res){
     var hashedPassword = bcrypt.hashSync(req.body.chat_pass, 8);
