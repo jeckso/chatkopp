@@ -50,7 +50,7 @@ router.post('/', function (req, res) {
 
 
     mysql.query(
-        'INSERT INTO `messages` (`sender_name`, `to_name`, `text_data`) VALUES ("' + req.body.$name + '","all", "' + req.body.$message + '")', function (error, results, fields) {
+        'CALL insert_message("' + req.body.$name + '","' + req.body.$message + '",1)', function (error, results, fields) {
             if (error) throw error;
             res.send(results);
             //res.send(JSON.stringify({"status": 200, "error": null, "response": results}));
@@ -58,7 +58,7 @@ router.post('/', function (req, res) {
 });
 router.get('/', function (req, res) {
     mysql.query(
-        'SELECT * FROM messages ORDER BY id DESC', function (error, results, fields) {
+        'CALL select_messages(1)', function (error, results, fields) {
             if (error) throw error;
             res.send(results);
             //res.send(JSON.stringify({"status": 200, "error": null, "response": results}));
