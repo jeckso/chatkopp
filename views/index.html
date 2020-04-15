@@ -94,6 +94,8 @@
                             alertClass = 'light';
                             break;
                     }
+                    console.log(post.name);
+                    console.log(post.text_data);
                     $all_messages.append("<div class='alert alert-" + alertClass + "'><b>" + post.name + "</b>: " + post.text_data + "</div>");
 
                 });
@@ -102,10 +104,10 @@
             }
 
         }
-       req.open('GET','https://chatkopp.herokuapp.com/api',true);
+       req.open('GET','https://chatkopp.herokuapp.com/api/',true);
         req.send();
 
-        setInterval(function(){ajax()},10000);
+   //     setInterval(function(){ajax()},10000);
     }
 
     // setInterval(function(){ajax()},1000);
