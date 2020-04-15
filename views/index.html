@@ -70,7 +70,7 @@
                 var posts = JSON.parse(req.responseText);
 
                 console.log(posts);
-                posts.forEach(function (post)
+                posts[0].forEach(function (post)
                 {
                     var random = Math.floor(Math.random() * (max - min)) + min;
                     var alertClass;
@@ -94,8 +94,7 @@
                             alertClass = 'light';
                             break;
                     }
-                    console.log(post.name);
-                    console.log(post.text_data);
+
                     $all_messages.append("<div class='alert alert-" + alertClass + "'><b>" + post.name + "</b>: " + post.text_data + "</div>");
 
                 });
