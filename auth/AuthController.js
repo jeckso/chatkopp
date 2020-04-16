@@ -60,27 +60,25 @@ router.get('/logout', function (req, res) {
 });
 
 
-
-router.post('/create', function(req,res){
+router.post('/create', function (req, res) {
 
     var hashedPassword = bcrypt.hashSync(req.body.pass, 8);
     mysql.query('INSERT INTO `room` (`name`, `pass`) VALUES ("' + req.body.name + '", "' + hashedPassword + '")', function (err, user) {
-
         if (err) return res.status(401).send("Room already exist`.");
-
-       // res.redirect(307, 'api/chat/private/login/');
+        else return res.status(200);
+        // res.redirect(307, 'api/chat/private/login/');
         //res.status(200).send("Chat created successfully!");
 
     });
-    });
+});
 
 router.get('/me', VerifyToken, function (req, res, next) {
 
 
-      //  if (err) return res.status(500).send("There was a problem finding the user.");
-        // if (!user) return res.status(404).send("No user found.");
+    //  if (err) return res.status(500).send("There was a problem finding the user.");
+    // if (!user) return res.status(404).send("No user found.");
     res.status(200).send("MMM Let's have sex");
-        // res.status(200).send(user);
+    // res.status(200).send(user);
 
 
 });
