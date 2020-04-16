@@ -90,10 +90,11 @@ router.get('/', function (req, res) {
             });
     } else {
 
-
+        console.log(token);
         jwt.verify(token, config.secret, function (err, decoded) {
             if (err)
                 return res.status(500).send({auth: false, message: 'Failed to authenticate token.'});
+            console.log(decoded);
             mysql.query(
                 'CALL select_messages(' + decoded.id + ')', function (error, results, fields) {
                     if (error) throw error;
