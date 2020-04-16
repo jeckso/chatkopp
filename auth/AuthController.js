@@ -18,13 +18,13 @@ var config = require('../config'); // get config file
 router.post('/login', function (req, res) {
     var hashedPassword = bcrypt.hashSync(req.body.pass, 8);
 
-    mysql.query('SELECT `id` FROM `room` WHERE `name` = "' + req.body.name + '"', function (error, results, fields) {
+    mysql.query('SELECT * FROM `room` WHERE `name` = "' + req.body.name + '"', function (error, results, fields) {
         if (error) return res.status(500).send("There was a problem logging in`.");
         if (results == 0) {
             return res.status(404).send("No chat with name ", req.body.name, " found :(");
         } else {
 
-            var passwordIsValid = bcrypt.compareSync(req.body.chat_pass, results[0].pass);
+            var passwordIsValid = bcrypt.compareSync(req.body.pass, results[0].pass);
             if (!passwordIsValid) return res.status(401).send({auth: false, token: null});
             var token = jwt.sign({id: req.body.id}, config.secret, {
                 expiresIn: 86400 // expires in 24 hours
