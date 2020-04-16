@@ -65,7 +65,7 @@
 
 
         req.send(body);
-        xhr.onreadystatechange = () => {
+        req.onreadystatechange = () => {
             if (req.status === 401) {
                 alert("Room already exist");
             }
