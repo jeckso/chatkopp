@@ -66,13 +66,13 @@
 
         req.send(body);
 
-            if (req.status === 401) {
-                alert("Room already exist");
-            }
-            else if(req.status === 200) {
-                alert("Created successfully");
-                window.location.replace("https://chatkopp.herokuapp.com/api/chat/private/login/");
-            }
+        if (xhr.status != 200) {
+            // обработать ошибку
+            alert('Ошибка ' + xhr.status + ': ' + xhr.statusText);
+        } else {
+            // вывести результат
+            alert(xhr.responseText);
+        }
 
 
     }
