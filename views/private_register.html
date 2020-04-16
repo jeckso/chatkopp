@@ -66,12 +66,12 @@
 
         req.send(body);
 
-        if (xhr.status != 200) {
+        if (req.status != 200) {
             // обработать ошибку
-            alert('Ошибка ' + xhr.status + ': ' + xhr.statusText);
+            alert('Ошибка ' + req.status + ': ' + req.statusText);
         } else {
             // вывести результат
-            alert(xhr.responseText);
+            alert(req.responseText);
         }
 
 
