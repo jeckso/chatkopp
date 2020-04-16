@@ -50,7 +50,7 @@ router.get('/chat/private/register/', function (req, res) {
 });
 
 router.post('/', function (req, res) {
-
+    var token = req.headers['x-access-token'];
     if (token === undefined) {
         mysql.query(
             'CALL insert_message("' + req.body.$name + '","' + req.body.$message + '",1)', function (error, results, fields) {
