@@ -35,7 +35,7 @@ router.post('/login', function (req, res) {
             //res.setHeader("x-access-token", token);
 
             res.cookie('token', token, {
-                expires: new Date(Date.now() + expiration),
+                expires: new Date(Date.now() + 86400),
                 secure: false, // set to true if your using https
                 httpOnly: true,
             });
