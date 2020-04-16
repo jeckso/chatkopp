@@ -64,7 +64,7 @@ router.post('/create', function (req, res) {
 
     var hashedPassword = bcrypt.hashSync(req.body.pass, 8);
     mysql.query('INSERT INTO `room` (`name`, `pass`) VALUES ("' + req.body.name + '", "' + hashedPassword + '")', function (err, user) {
-        if (err) return res.status(401).send("Room already exist`.");
+        if (err) return res.status(409).send("Room already exist`.");
        return res.status(200).send("success");
         // res.redirect(307, 'api/chat/private/login/');
         //res.status(200).send("Chat created successfully!");

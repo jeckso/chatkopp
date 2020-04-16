@@ -68,6 +68,8 @@
 
         if (req.status != 200) {
             // обработать ошибку
+            alert(req.responseText);
+           console.log(req);
             alert('Ошибка ' + req.status + ': ' + req.statusText);
         } else {
             // вывести результат
