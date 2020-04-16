@@ -69,8 +69,9 @@
 
         req.onreadystatechange = function () { // (3)
             if (req.readyState != 4) return;
-            var response = JSON.parse(req.responseText)
-            if (response[0].token === null) {
+            var response = JSON.parse(req.responseText);
+            console.log(response);
+            if (response.token === null) {
                 alert("Wrong login or pass");
             } else {
                 alert("Login Successfully");
