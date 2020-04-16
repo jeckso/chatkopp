@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var bodyParser = require('body-parser');
-
+const cookieParser = require('cookie-parser');
 var VerifyToken = require('./VerifyToken');
 var mysql = require('../database');
 router.use(bodyParser.urlencoded({extended: false}));
@@ -31,9 +31,16 @@ router.post('/login', function (req, res) {
             var token = jwt.sign({id: req.body.id}, config.secret, {
                 expiresIn: 86400 // expires in 24 hours
             });
-            res.setHeader("x-access-token", token);
-            res.status(200).send({auth: true, token: token});
+          // console.log(req.session);
+            //res.setHeader("x-access-token", token);
+
+            res.cookie('token', token, {
+                expires: new Date(Date.now() + expiration),
+                secure: false, // set to true if your using https
+                httpOnly: true,
+            });
         }
+        res.status(200).send({auth: true, token: token});
 
 
     });

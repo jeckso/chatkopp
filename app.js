@@ -12,6 +12,7 @@ var usersRouter = require('./routes/users');
 var authRouter = require('./auth/AuthController')
 
 var app = express();
+app.use(cookieParser());
 var mysql = require("mysql");
 app.use(bodyparser.urlencoded({ extended: false }))
 

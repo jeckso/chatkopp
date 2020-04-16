@@ -50,8 +50,8 @@ router.get('/chat/private/register/', function (req, res) {
 });
 
 router.post('/', function (req, res) {
-    var token = req.headers['x-access-token'];
-    if (token === undefined) {
+    var token = req.cookies.token || '';
+    if (!token) {
         mysql.query(
             'CALL insert_message("' + req.body.$name + '","' + req.body.$message + '",1)', function (error, results, fields) {
                 if (error) throw error;
@@ -79,9 +79,9 @@ router.post('/', function (req, res) {
 router.get('/', function (req, res) {
 
     console.log(req.headers);
-    var token = req.headers['x-access-token'];
+    var token = req.cookies.token || '';
     console.log(token);
-    if (token === undefined) {
+    if (!token) {
         mysql.query(
             'CALL select_messages(1)', function (error, results, fields) {
                 if (error) throw error;
