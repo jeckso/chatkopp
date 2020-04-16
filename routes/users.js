@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var app = express();
+var config = require('../config');
 var cors = require('cors')
 var bodyParser = require("body-parser");
 var fs = require('fs');
@@ -48,21 +49,53 @@ router.get('/chat/private/register/', function (req, res) {
 
 router.post('/', function (req, res) {
 
+    if (!token){
+        mysql.query(
+            'CALL insert_message("' + req.body.$name + '","' + req.body.$message + '",1)', function (error, results, fields) {
+                if (error) throw error;
+                res.send(results);
+                //res.send(JSON.stringify({"status": 200, "error": null, "response": results}));
+            });
+    }
+    jwt.verify(token, config.secret, function (err, decoded) {
+        if (err)
+            return res.status(500).send({auth: false, message: 'Failed to authenticate token.'});
+        mysql.query(
+            'CALL insert_message("' + req.body.$name + '","' + req.body.$message + '",'+decoded.id+')', function (error, results, fields) {
+                if (error) throw error;
+                res.send(results);
+                //res.send(JSON.stringify({"status": 200, "error": null, "response": results}));
+            });
 
-    mysql.query(
-        'CALL insert_message("' + req.body.$name + '","' + req.body.$message + '",1)', function (error, results, fields) {
-            if (error) throw error;
-            res.send(results);
-            //res.send(JSON.stringify({"status": 200, "error": null, "response": results}));
-        });
+
+    });
+
+
+
 });
 router.get('/', function (req, res) {
-    mysql.query(
-        'CALL select_messages(1)', function (error, results, fields) {
-            if (error) throw error;
-            res.send(results);
-            //res.send(JSON.stringify({"status": 200, "error": null, "response": results}));
-        });
+    var token = req.headers['x-access-token'];
+    if (!token) {
+        mysql.query(
+            'CALL select_messages(1)', function (error, results, fields) {
+                if (error) throw error;
+                res.send(results);
+                //res.send(JSON.stringify({"status": 200, "error": null, "response": results}));
+            });
+    }
+    jwt.verify(token, config.secret, function (err, decoded) {
+        if (err)
+            return res.status(500).send({auth: false, message: 'Failed to authenticate token.'});
+        mysql.query(
+            'CALL select_messages(' + decoded.id + ')', function (error, results, fields) {
+                if (error) throw error;
+                res.send(results);
+                //res.send(JSON.stringify({"status": 200, "error": null, "response": results}));
+            });
+
+
+    });
+
 });
 
 

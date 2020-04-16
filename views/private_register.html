@@ -70,11 +70,11 @@
         req.onreadystatechange = function () { // (3)
             if (req.readyState != 4) return;
 
-            if (req.body.token == null) {
-                alert("Wrong login or pass");
+            if (req.status != 200) {
+                alert("Room already exist");
             } else {
-                alert("Login Successfully");
-                window.location.replace("https://chatkopp.herokuapp.com/api/chat/");
+                alert("Room created successfully");
+                window.location.replace("https://chatkopp.herokuapp.com/api/chat/private/login/");
             }
         }
         }
