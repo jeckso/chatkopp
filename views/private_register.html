@@ -65,7 +65,7 @@
 
 
         req.send(body);
-        req.onreadystatechange = () => {
+
             if (req.status === 401) {
                 alert("Room already exist");
             }
@@ -73,7 +73,6 @@
                 alert("Created successfully");
                 window.location.replace("https://chatkopp.herokuapp.com/api/chat/private/login/");
             }
-        };
 
 
     }
