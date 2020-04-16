@@ -22,7 +22,8 @@
         <a class="p-2 text-dark" href="https://chatkopp.herokuapp.com/api/chat">Public chat</a>
         <a class="p-2 text-dark" href="https://chatkopp.herokuapp.com/api/chat/private/login/">Private chat login</a>
     </nav>
-    <a class="btn btn-outline-primary" href="https://chatkopp.herokuapp.com/api/chat/private/register/">Create Private Chat</a>
+    <a class="btn btn-outline-primary" href="https://chatkopp.herokuapp.com/api/chat/private/register/">Create Private
+        Chat</a>
 </div>
 <!-- Основная часть страницы -->
 <div class="container">
@@ -35,14 +36,15 @@
             <!-- Форма для получения сообщений и имени -->
             <h3 align="center">Register form</h3>
             <form id="credentials" onsort="fet()">
-                <label  for="chat_name">Chat name</label>
-                <input type="text" name="name" id="chat_name" placeholder="Enter chat name" class="form-control" style="text-align:center;">
+                <label for="chat_name">Chat name</label>
+                <input type="text" name="name" id="chat_name" placeholder="Enter chat name" class="form-control"
+                       style="text-align:center;">
                 <br>
                 <label for="chat_pass">Chat pass</label>
                 <input type="text" name="pass" id="chat_pass" placeholder="Введите имя получателя или all"
                        class="form-control" style="text-align:center;">
                 <br>
-                <input type="button" value="Register" class="btn btn-danger" onclick="f()"  >
+                <input type="button" value="Register" class="btn btn-danger" onclick="f()">
             </form>
         </div>
 
@@ -55,29 +57,26 @@
     function f() {
         var $name = $("#chat_name"); // Поле с именем
         var $pass = $("#chat_pass"); // Текстовое поле
-        var req=new XMLHttpRequest();
+        var req = new XMLHttpRequest();
         var body = 'name=' + encodeURIComponent($name.val()) +
             '&pass=' + encodeURIComponent($pass.val());
 
-        req.open("POST",'https://chatkopp.herokuapp.com/auth/create',true);
+        req.open("POST", 'https://chatkopp.herokuapp.com/auth/create', true);
         req.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-
 
 
         req.send(body);
 
-        if (req.status != 200) {
-            // обработать ошибку
-            alert(req.responseText);
-           console.log(req);
-            alert('Ошибка ' + req.status + ': ' + req.statusText);
-        } else {
-            // вывести результат
-            alert("Success!");
+        req.onreadystatechange = function () { // (3)
+            if (req.readyState != 4) return;
+
+            if (req.status != 200) {
+                alert(req.status + ': ' + req.statusText);
+            } else {
+                alert(req.responseText);
+            }
+
         }
-
-
-    }
 </script>
 <!-- Подключаем jQuery, а также Socket.io -->
 <!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>-->
