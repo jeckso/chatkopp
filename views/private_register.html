@@ -69,7 +69,7 @@
             if (req.status === 401) {
                 alert("Room already exist");
             }
-            else {
+            else if(req.status === 200) {
                 alert("Created successfully");
                 window.location.replace("https://chatkopp.herokuapp.com/api/chat/private/login/");
             }
