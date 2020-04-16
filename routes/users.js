@@ -74,6 +74,7 @@ router.post('/', function (req, res) {
 
 });
 router.get('/', function (req, res) {
+    console.log(req.headers);
     var token = req.headers['x-access-token'];
     if (!token) {
         mysql.query(
