@@ -16,7 +16,7 @@ var bcrypt = require('bcryptjs');
 var config = require('../config'); // get config file
 
 router.post('/login', function (req, res) {
-    var hashedPassword = bcrypt.hashSync(req.body.chat_pass, 8);
+    var hashedPassword = bcrypt.hashSync(req.body.pass, 8);
 
     mysql.query('SELECT `id` FROM `room` WHERE `name` = "' + req.body.chat_name + '"', function (error, results, fields) {
         if (error) return res.status(500).send("There was a problem logging in`.");
@@ -62,10 +62,13 @@ router.get('/logout', function (req, res) {
 
 
 router.post('/create', function(req,res){
-    var hashedPassword = bcrypt.hashSync(req.body.chat_pass, 8);
-    mysql.query('INSERT INTO `room` (`name`, `pass`) VALUES ("' + req.body.chat_name + '", "' + hashedPassword + '")', function (err, user) {
-        if (err) return res.status(401).send("There was a problem creating chat`.");
-        res.redirect(307, '/auth/login');
+
+    var hashedPassword = bcrypt.hashSync(req.body.pass, 8);
+    mysql.query('INSERT INTO `room` (`name`, `pass`) VALUES ("' + req.body.name + '", "' + hashedPassword + '")', function (err, user) {
+
+        if (err) return res.status(401).send("Room already exist`.");
+
+       // res.redirect(307, 'api/chat/private/login/');
         //res.status(200).send("Chat created successfully!");
 
     });

@@ -65,7 +65,15 @@
 
 
         req.send(body);
-        ajax();
+        xhr.onreadystatechange = () => {
+            if (req.status === 401) {
+                alert("Room already exist");
+            }
+            else {
+                alert("Created successfully");
+                window.location.replace("https://chatkopp.herokuapp.com/api/chat/private/login/");
+            }
+        };
 
 
     }
