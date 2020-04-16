@@ -1,7 +1,9 @@
 var express = require('express');
 var router = express.Router();
 var app = express();
-var config = require('../config');
+var jwt = require('jsonwebtoken'); // used to create, sign, and verify tokens
+var config = require('../config'); // get our config file
+
 var cors = require('cors')
 var bodyParser = require("body-parser");
 var fs = require('fs');
