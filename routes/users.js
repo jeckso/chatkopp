@@ -50,58 +50,60 @@ router.get('/chat/private/register/', function (req, res) {
 });
 
 router.post('/', function (req, res) {
-    req.header("Access-Control-Allow-Origin", "*");
-    req.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Authorization, Content-Type, Accept");
-    if (!token){
+
+    if (!token) {
         mysql.query(
             'CALL insert_message("' + req.body.$name + '","' + req.body.$message + '",1)', function (error, results, fields) {
                 if (error) throw error;
-                res.send(results);
+                return res.send(results);
                 //res.send(JSON.stringify({"status": 200, "error": null, "response": results}));
             });
+    } else {
+
+
+        jwt.verify(token, config.secret, function (err, decoded) {
+            if (err)
+                return res.status(500).send({auth: false, message: 'Failed to authenticate token.'});
+            mysql.query(
+                'CALL insert_message("' + req.body.$name + '","' + req.body.$message + '",' + decoded.id + ')', function (error, results, fields) {
+                    if (error) throw error;
+                    return res.send(results);
+                    //res.send(JSON.stringify({"status": 200, "error": null, "response": results}));
+                });
+
+
+        });
     }
-    jwt.verify(token, config.secret, function (err, decoded) {
-        if (err)
-            return res.status(500).send({auth: false, message: 'Failed to authenticate token.'});
-        mysql.query(
-            'CALL insert_message("' + req.body.$name + '","' + req.body.$message + '",'+decoded.id+')', function (error, results, fields) {
-                if (error) throw error;
-                res.send(results);
-                //res.send(JSON.stringify({"status": 200, "error": null, "response": results}));
-            });
-
-
-    });
-
-
 
 });
 router.get('/', function (req, res) {
-    req.header("Access-Control-Allow-Origin", "*");
-    req.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Authorization, Content-Type, Accept");
+
     console.log(req.headers);
     var token = req.headers['x-access-token'];
-    if (!token) {
+    console.log(token);
+    if (token === undefined) {
         mysql.query(
             'CALL select_messages(1)', function (error, results, fields) {
                 if (error) throw error;
-                res.send(results);
+                return res.send(results);
                 //res.send(JSON.stringify({"status": 200, "error": null, "response": results}));
             });
+    } else {
+
+
+        jwt.verify(token, config.secret, function (err, decoded) {
+            if (err)
+                return res.status(500).send({auth: false, message: 'Failed to authenticate token.'});
+            mysql.query(
+                'CALL select_messages(' + decoded.id + ')', function (error, results, fields) {
+                    if (error) throw error;
+                    return res.send(results);
+                    //res.send(JSON.stringify({"status": 200, "error": null, "response": results}));
+                });
+
+
+        });
     }
-    jwt.verify(token, config.secret, function (err, decoded) {
-        if (err)
-            return res.status(500).send({auth: false, message: 'Failed to authenticate token.'});
-        mysql.query(
-            'CALL select_messages(' + decoded.id + ')', function (error, results, fields) {
-                if (error) throw error;
-                res.send(results);
-                //res.send(JSON.stringify({"status": 200, "error": null, "response": results}));
-            });
-
-
-    });
-
 });
 
 
