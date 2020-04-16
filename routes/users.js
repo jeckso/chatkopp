@@ -48,7 +48,8 @@ router.get('/chat/private/register/', function (req, res) {
 });
 
 router.post('/', function (req, res) {
-
+    req.header("Access-Control-Allow-Origin", "*");
+    req.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Authorization, Content-Type, Accept");
     if (!token){
         mysql.query(
             'CALL insert_message("' + req.body.$name + '","' + req.body.$message + '",1)', function (error, results, fields) {
@@ -74,6 +75,8 @@ router.post('/', function (req, res) {
 
 });
 router.get('/', function (req, res) {
+    req.header("Access-Control-Allow-Origin", "*");
+    req.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Authorization, Content-Type, Accept");
     console.log(req.headers);
     var token = req.headers['x-access-token'];
     if (!token) {

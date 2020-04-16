@@ -16,6 +16,8 @@ var bcrypt = require('bcryptjs');
 var config = require('../config'); // get config file
 
 router.post('/login', function (req, res) {
+    req.header("Access-Control-Allow-Origin", "*");
+    req.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Authorization, Content-Type, Accept");
     var hashedPassword = bcrypt.hashSync(req.body.pass, 8);
 
     mysql.query('SELECT * FROM `room` WHERE `name` = "' + req.body.name + '"', function (error, results, fields) {
@@ -62,7 +64,8 @@ router.get('/logout', function (req, res) {
 
 
 router.post('/create', function (req, res) {
-
+    req.header("Access-Control-Allow-Origin", "*");
+    req.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Authorization, Content-Type, Accept");
     var hashedPassword = bcrypt.hashSync(req.body.pass, 8);
     mysql.query('INSERT INTO `room` (`name`, `pass`) VALUES ("' + req.body.name + '", "' + hashedPassword + '")', function (err, user) {
         if (err) return res.status(409).send("Room already exist`.");
