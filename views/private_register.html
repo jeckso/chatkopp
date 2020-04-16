@@ -41,7 +41,7 @@
                        style="text-align:center;">
                 <br>
                 <label for="chat_pass">Chat pass</label>
-                <input type="text" name="pass" id="chat_pass" placeholder="Введите имя получателя или all"
+                <input type="text" name="pass" id="chat_pass" placeholder="Enter chat pass"
                        class="form-control" style="text-align:center;">
                 <br>
                 <input type="button" value="Register" class="btn btn-danger" onclick="f()">
@@ -71,9 +71,10 @@
             if (req.readyState != 4) return;
 
             if (req.status != 200) {
-                alert(req.status + ': ' + req.statusText);
+                alert("Room already exist");
             } else {
-                alert(req.responseText);
+                alert("Room created successfully");
+                window.location.replace("https://chatkopp.herokuapp.com/api/chat/private/login/");
             }
         }
         }
