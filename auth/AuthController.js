@@ -15,8 +15,8 @@ var jwt = require('jsonwebtoken'); // used to create, sign, and verify tokens
 var bcrypt = require('bcryptjs');
 var config = require('../config'); // get config file
 router.get('/logout', function(req,res){
-    res.cookie('token', {expires: Date.now()});
-    res.redirect(307, 'api/chat/');
+    res.cookie('token', 1,{expires: Date.now()});
+    res.redirect(307, './api/chat/');
 });
 router.post('/login', function (req, res) {
     req.header("Access-Control-Allow-Origin", "*");
